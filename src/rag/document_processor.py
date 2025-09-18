@@ -11,9 +11,15 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 import structlog
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import TextLoader, PyPDFLoader
-from langchain_core.documents import Document
+# Remplacement des imports LangChain par des alternatives natives
+import re
+from typing import Dict, List, Optional, Any, Tuple
+
+class Document:
+    """Native Document class to replace LangChain Document."""
+    def __init__(self, page_content: str, metadata: Dict[str, Any] = None):
+        self.page_content = page_content
+        self.metadata = metadata or {}
 
 logger = structlog.get_logger(__name__)
 
@@ -35,12 +41,9 @@ class DocumentProcessor:
         self.max_file_size = max_file_size
         self.allowed_extensions = allowed_extensions
         
-        self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap,
-            length_function=len,
-            separators=["\n\n", "\n", " ", ""]
-        )
+        # Configuration du splitter de texte natif
+        self.chunk_size = chunk_size
+        self.chunk_overlap = chunk_overlap
         
         logger.info(
             "DocumentProcessor initialized",
@@ -48,6 +51,100 @@ class DocumentProcessor:
             chunk_overlap=chunk_overlap,
             max_file_size=max_file_size
         )
+    
+    def _split_documents_native(self, documents):
+        """Split documents into chunks using native implementation."""
+        chunked_documents = []
+        
+        for doc in documents:
+            text = doc.page_content
+            chunks = self._split_text_native(text)
+            
+            for i, chunk_text in enumerate(chunks):
+                chunk_doc = type(doc)(
+                    page_content=chunk_text,
+                    metadata=doc.metadata.copy()
+                )
+                chunk_doc.metadata["chunk_index"] = i
+                chunked_documents.append(chunk_doc)
+        
+        return chunked_documents
+    
+    def _split_text_native(self, text):
+        """Split text into chunks using native implementation."""
+        if len(text) <= self.chunk_size:
+            return [text]
+        
+        chunks = []
+        separators = ["\n\n", "\n", " ", ""]
+        
+        for separator in separators:
+            if separator == "":
+                # Character-level splitting as last resort
+                for i in range(0, len(text), self.chunk_size - self.chunk_overlap):
+                    chunk = text[i:i + self.chunk_size]
+                    if chunk.strip():
+                        chunks.append(chunk)
+                break
+            else:
+                parts = text.split(separator)
+                current_chunk = ""
+                
+                for part in parts:
+                    if len(current_chunk) + len(part) + len(separator) <= self.chunk_size:
+                        if current_chunk:
+                            current_chunk += separator + part
+                        else:
+                            current_chunk = part
+                    else:
+                        if current_chunk:
+                            chunks.append(current_chunk)
+                        current_chunk = part
+                
+                if current_chunk:
+                    chunks.append(current_chunk)
+                
+                if len(chunks) > 1:
+                    break
+        
+        return chunks
+    
+    def _load_pdf_native(self, file_path: Path) -> List[Document]:
+        """Load PDF document using native PyPDF2."""
+        import PyPDF2
+        
+        documents = []
+        with open(file_path, 'rb') as file:
+            pdf_reader = PyPDF2.PdfReader(file)
+            for page_num, page in enumerate(pdf_reader.pages):
+                text = page.extract_text()
+                if text.strip():
+                    doc = Document(
+                        page_content=text,
+                        metadata={
+                            "source": str(file_path),
+                            "page": page_num + 1,
+                            "file_type": "pdf"
+                        }
+                    )
+                    documents.append(doc)
+        
+        return documents
+    
+    def _load_text_native(self, file_path: Path) -> List[Document]:
+        """Load text document using native file reading."""
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+        
+        doc = Document(
+            page_content=content,
+            metadata={
+                "source": str(file_path),
+                "file_type": file_path.suffix.lower()
+            }
+        )
+        
+        return [doc]
     
     def validate_document(self, file_path: Path) -> Tuple[bool, Optional[str]]:
         """
@@ -182,13 +279,11 @@ class DocumentProcessor:
         """
         try:
             if file_path.suffix.lower() == ".pdf":
-                loader = PyPDFLoader(str(file_path))
+                documents = self._load_pdf_native(file_path)
             elif file_path.suffix.lower() in [".txt", ".md"]:
-                loader = TextLoader(str(file_path), encoding="utf-8")
+                documents = self._load_text_native(file_path)
             else:
                 raise ValueError(f"Unsupported file type: {file_path.suffix}")
-            
-            documents = loader.load()
             logger.info("Document loaded", file_path=str(file_path), pages=len(documents))
             return documents
             
@@ -229,8 +324,8 @@ class DocumentProcessor:
             doc.metadata.update(metadata)
             doc.metadata["chunk_id"] = abs(hash(f"{metadata['document_id']}_{doc.page_content}")) % 1000000000
         
-        # Split into chunks
-        chunked_documents = self.text_splitter.split_documents(documents)
+        # Split into chunks using native implementation
+        chunked_documents = self._split_documents_native(documents)
         
         # Add chunk-specific metadata
         for i, chunk in enumerate(chunked_documents):

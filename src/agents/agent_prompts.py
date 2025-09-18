@@ -121,8 +121,6 @@ You MUST format your response EXACTLY like this example:
 
 • 📚 Source reference
 
-**New Section Title:**
-
 • Another point with proper spacing
 
 CRITICAL: Each bullet point must be on its own line with proper spacing!""",
@@ -154,8 +152,6 @@ EXAMPLE FORMAT (EXACTLY LIKE THIS):
 
 • 📚 Source reference
 
-
-**New Section:**
 
 • Point in new section
 

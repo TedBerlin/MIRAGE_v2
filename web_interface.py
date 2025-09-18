@@ -121,6 +121,9 @@ HTML_INTERFACE = """
         .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .stat-item { text-align: center; padding: 15px; background: #f8f9fa; border-radius: 10px; }
         .stat-value { font-size: 2rem; font-weight: bold; color: #2c3e50; }
+        .stat-value.healthy { color: #27ae60; }
+        .stat-value.unhealthy { color: #e74c3c; }
+        .stat-value.error { color: #f39c12; }
         .stat-label { color: #7f8c8d; font-size: 0.9rem; margin-top: 5px; }
         .query-section { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .query-input { width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 1.1rem; margin-bottom: 15px; transition: border-color 0.3s ease; }
@@ -567,6 +570,9 @@ HTML_INTERFACE = """
                 document.getElementById('avgResponseTime').textContent = stats.average_response_time.toFixed(2);
                 document.getElementById('successRate').textContent = (stats.success_rate * 100).toFixed(1) + '%';
                 
+                // Load System Health
+                await loadSystemHealth();
+                
                 // Reset connection status on success
                 if (!isServerOnline) {
                     isServerOnline = true;
@@ -585,6 +591,22 @@ HTML_INTERFACE = """
                 }
                 
                 console.warn(`Failed to load stats (attempt ${connectionRetries}):`, error.message);
+            }
+        }
+        
+        async function loadSystemHealth() {
+            try {
+                const response = await fetch('/health');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const health = await response.json();
+                document.getElementById('systemStatus').textContent = health.status;
+                document.getElementById('systemStatus').className = health.status === 'healthy' ? 'stat-value healthy' : 'stat-value unhealthy';
+            } catch (error) {
+                document.getElementById('systemStatus').textContent = 'Error';
+                document.getElementById('systemStatus').className = 'stat-value error';
+                console.warn('Failed to load system health:', error.message);
             }
         }
         
@@ -1483,6 +1505,9 @@ async def process_query(request: QueryRequest):
 
 def main():
     """Start the complete web interface."""
+    import time
+    import threading
+    
     # Reset statistics on startup
     reset_statistics()
     
@@ -1490,9 +1515,9 @@ def main():
     print("=" * 50)
     print("✅ Complete interface initialized")
     print("🌐 Starting web interface...")
-    print("   URL: http://127.0.0.1:8005")
-    print("   Health: http://127.0.0.1:8005/health")
-    print("   API: http://127.0.0.1:8005/api/")
+    print("   URL: http://0.0.0.0:8005")
+    print("   Health: http://0.0.0.0:8005/health")
+    print("   API: http://0.0.0.0:8005/api/")
     print()
     print("📋 Available features:")
     print("   • Upload pharmaceutical documents")
@@ -1505,7 +1530,29 @@ def main():
     print("Press Ctrl+C to stop")
     print("=" * 50)
     
-    uvicorn.run(app, host="127.0.0.1", port=8005, log_level="info")
+    def run_server():
+        """Fonction pour exécuter le serveur en mode stable"""
+        uvicorn.run(
+            app, 
+            host="0.0.0.0",  # Écoute sur toutes les interfaces (Docker)
+            port=8005, 
+            log_level="info",
+            reload=False,    # Désactivé en production
+            workers=1,      # Évite les problèmes de concurrence
+            timeout_keep_alive=65,  # Timeout augmenté
+            loop="asyncio"   # Boucle asyncio explicite
+        )
+    
+    # Exécute le serveur en foreground
+    try:
+        run_server()
+    except KeyboardInterrupt:
+        print("\n🛑 Arrêt du serveur")
+    except Exception as e:
+        print(f"❌ Erreur du serveur: {e}")
+        # Garde le processus actif même en cas d'erreur
+        while True:
+            time.sleep(1)
 
 if __name__ == "__main__":
     main()

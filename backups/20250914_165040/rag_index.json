@@ -1,0 +1,156 @@
+{
+  "documents": {
+    "b2ece38de89c": {
+      "filename": "test_pharmaceutical.txt",
+      "content": "Paracétamol - Informations Pharmaceutiques Complètes\n\nLe paracétamol (acétaminophène) est un médicament analgésique et antipyrétique largement utilisé dans le traitement de la douleur et de la fièvre.\n\nPROPRIÉTÉS PHARMACOLOGIQUES:\n- Mécanisme d'action: Inhibition de la cyclooxygénase (COX) dans le système nerveux central\n- Biodisponibilité: 70-90% après administration orale\n- Demi-vie d'élimination: 1-4 heures chez l'adulte\n- Métabolisme: Principalement hépatique via glucuronidation et sulfatation\n\nEFFETS SECONDAIRES:\n- Nausées légères (5-10% des patients)\n- Réactions allergiques rares (<0.1%)\n- Toxicité hépatique en cas de surdosage (>4g/jour)\n- Anémie hémolytique chez les patients déficients en G6PD\n\nPOSOLOGIE RECOMMANDÉE:\n- Adultes: 500-1000mg toutes les 6-8 heures\n- Maximum: 4g par jour\n- Enfants: 10-15mg/kg toutes les 6 heures\n- Insuffisants rénaux: Réduire la posologie de 50%\n\nINTERACTIONS MÉDICAMENTEUSES:\n- Warfarine: Risque d'augmentation de l'INR\n- Phénobarbital: Diminution de l'efficacité du paracétamol\n- Éthanol: Augmentation du risque de toxicité hépatique\n- Isoniazide: Potentialisation de la toxicité hépatique\n\nCONTRE-INDICATIONS:\n- Hypersensibilité connue au paracétamol\n- Insuffisance hépatique sévère\n- Déficit en G6PD\n- Grossesse: Utilisation possible mais avec précaution\n\nSURVEILLANCE:\n- Fonction hépatique chez les patients à risque\n- Dosage plasmatique en cas de surdosage\n- Surveillance de l'INR chez les patients sous anticoagulants\n\nEFFICACITÉ CLINIQUE:\n- Douleur légère à modérée: Efficacité comparable à l'aspirine\n- Fièvre: Réduction de 1-2°C en 2-4 heures\n- Arthrose: Amélioration significative de la douleur et de la fonction\n- Migraine: Efficacité modérée en monothérapie\n\nRECHERCHES RÉCENTES:\n- Études sur l'association avec la caféine pour potentialiser l'effet analgésique\n- Développement de formulations à libération prolongée\n- Recherche sur les mécanismes d'action dans la douleur neuropathique\n",
+      "chunks": 5,
+      "keywords": [
+        "cox",
+        "patients",
+        "déficients",
+        "études",
+        "élimination",
+        "pharmacologiques",
+        "recherche",
+        "traitement",
+        "efficacité",
+        "effets"
+      ],
+      "metadata": {
+        "file_path": "data/raw_documents/test_pharmaceutical.txt",
+        "file_size": 2024,
+        "file_type": ".txt"
+      },
+      "added_at": "2025-09-13T13:00:08.898244"
+    },
+    "2d7ad823c27a": {
+      "filename": "Data analysis process.docx",
+      "content": "[Content from Data analysis process.docx] - This document has been uploaded and is being processed for the RAG system.",
+      "chunks": 1,
+      "keywords": [
+        "data",
+        "docx",
+        "uploaded",
+        "content",
+        "has",
+        "being",
+        "been",
+        "this",
+        "system",
+        "analysis"
+      ],
+      "metadata": {
+        "file_path": "data/raw_documents/Data analysis process.docx",
+        "file_size": 17827,
+        "file_type": ".docx",
+        "uploaded_at": "2025-09-13T13:10:04.626774"
+      },
+      "added_at": "2025-09-13T13:10:04.627062"
+    }
+  },
+  "chunks": {
+    "b2ece38de89c_chunk_0": {
+      "doc_id": "b2ece38de89c",
+      "content": "Paracétamol - Informations Pharmaceutiques Complètes\n\nLe paracétamol (acétaminophène) est un médicament analgésique et antipyrétique largement utilisé dans le traitement de la douleur et de la fièvre.\n\nPROPRIÉTÉS PHARMACOLOGIQUES:\n- Mécanisme d'action: Inhibition de la cyclooxygénase (COX) dans le système nerveux central\n- Biodisponibilité: 70-90% après administration orale\n- Demi-vie d'élimination: 1-4 heures chez l'adulte\n- Métabolisme: Principalement hépatique via glucuronidation et sulfatati",
+      "keywords": [
+        "largement",
+        "cox",
+        "complètes",
+        "action",
+        "inhibition",
+        "antipyrétique",
+        "vie",
+        "élimination",
+        "pharmacologiques",
+        "adulte"
+      ],
+      "chunk_index": 0
+    },
+    "b2ece38de89c_chunk_1": {
+      "doc_id": "b2ece38de89c",
+      "content": "n: 1-4 heures chez l'adulte\n- Métabolisme: Principalement hépatique via glucuronidation et sulfatation\n\nEFFETS SECONDAIRES:\n- Nausées légères (5-10% des patients)\n- Réactions allergiques rares (<0.1%)\n- Toxicité hépatique en cas de surdosage (>4g/jour)\n- Anémie hémolytique chez les patients déficients en G6PD\n\nPOSOLOGIE RECOMMANDÉE:\n- Adultes: 500-1000mg toutes les 6-8 heures\n- Maximum: 4g par jour\n- Enfants: 10-15mg/kg toutes les 6 heures\n- Insuffisants rénaux: Réduire la posologie de 50%\n\nINTE",
+      "keywords": [
+        "enfants",
+        "inte",
+        "posologie",
+        "rénaux",
+        "patients",
+        "déficients",
+        "adulte",
+        "toutes",
+        "légères",
+        "nausées"
+      ],
+      "chunk_index": 1
+    },
+    "b2ece38de89c_chunk_2": {
+      "doc_id": "b2ece38de89c",
+      "content": "r\n- Enfants: 10-15mg/kg toutes les 6 heures\n- Insuffisants rénaux: Réduire la posologie de 50%\n\nINTERACTIONS MÉDICAMENTEUSES:\n- Warfarine: Risque d'augmentation de l'INR\n- Phénobarbital: Diminution de l'efficacité du paracétamol\n- Éthanol: Augmentation du risque de toxicité hépatique\n- Isoniazide: Potentialisation de la toxicité hépatique\n\nCONTRE-INDICATIONS:\n- Hypersensibilité connue au paracétamol\n- Insuffisance hépatique sévère\n- Déficit en G6PD\n- Grossesse: Utilisation possible mais avec pré",
+      "keywords": [
+        "enfants",
+        "posologie",
+        "rénaux",
+        "warfarine",
+        "augmentation",
+        "toutes",
+        "potentialisation",
+        "efficacité",
+        "utilisation",
+        "éthanol"
+      ],
+      "chunk_index": 2
+    },
+    "b2ece38de89c_chunk_3": {
+      "doc_id": "b2ece38de89c",
+      "content": "ol\n- Insuffisance hépatique sévère\n- Déficit en G6PD\n- Grossesse: Utilisation possible mais avec précaution\n\nSURVEILLANCE:\n- Fonction hépatique chez les patients à risque\n- Dosage plasmatique en cas de surdosage\n- Surveillance de l'INR chez les patients sous anticoagulants\n\nEFFICACITÉ CLINIQUE:\n- Douleur légère à modérée: Efficacité comparable à l'aspirine\n- Fièvre: Réduction de 1-2°C en 2-4 heures\n- Arthrose: Amélioration significative de la douleur et de la fonction\n- Migraine: Efficacité modé",
+      "keywords": [
+        "anticoagulants",
+        "surveillance",
+        "comparable",
+        "patients",
+        "aspirine",
+        "migraine",
+        "efficacité",
+        "dosage",
+        "possible",
+        "chez"
+      ],
+      "chunk_index": 3
+    },
+    "b2ece38de89c_chunk_4": {
+      "doc_id": "b2ece38de89c",
+      "content": "s\n- Arthrose: Amélioration significative de la douleur et de la fonction\n- Migraine: Efficacité modérée en monothérapie\n\nRECHERCHES RÉCENTES:\n- Études sur l'association avec la caféine pour potentialiser l'effet analgésique\n- Développement de formulations à libération prolongée\n- Recherche sur les mécanismes d'action dans la douleur neuropathique",
+      "keywords": [
+        "association",
+        "récentes",
+        "développement",
+        "action",
+        "études",
+        "migraine",
+        "recherche",
+        "efficacité",
+        "analgésique",
+        "neuropathique"
+      ],
+      "chunk_index": 4
+    },
+    "2d7ad823c27a_chunk_0": {
+      "doc_id": "2d7ad823c27a",
+      "content": "[Content from Data analysis process.docx] - This document has been uploaded and is being processed for the RAG system.",
+      "keywords": [
+        "data",
+        "docx",
+        "uploaded",
+        "content",
+        "has",
+        "being",
+        "been",
+        "this",
+        "system",
+        "analysis"
+      ],
+      "chunk_index": 0
+    }
+  },
+  "last_updated": "2025-09-13T13:10:04.627086"
+}

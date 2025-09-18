@@ -1,0 +1,52 @@
+Paracétamol - Informations Pharmaceutiques Complètes
+
+Le paracétamol (acétaminophène) est un médicament analgésique et antipyrétique largement utilisé dans le traitement de la douleur et de la fièvre.
+
+PROPRIÉTÉS PHARMACOLOGIQUES:
+- Mécanisme d'action: Inhibition de la cyclooxygénase (COX) dans le système nerveux central
+- Biodisponibilité: 70-90% après administration orale
+- Demi-vie d'élimination: 1-4 heures chez l'adulte
+- Métabolisme: Principalement hépatique via glucuronidation et sulfatation
+
+EFFETS SECONDAIRES:
+- Nausées légères (5-10% des patients)
+- Réactions allergiques rares (<0.1%)
+- Toxicité hépatique en cas de surdosage (>4g/jour)
+- Anémie hémolytique chez les patients déficients en G6PD
+
+POSOLOGIE RECOMMANDÉE:
+- Adultes: 500-1000mg toutes les 6-8 heures
+- Maximum: 4g par jour
+- Enfants: 10-15mg/kg toutes les 6 heures
+- Insuffisants rénaux: Réduire la posologie de 50%
+
+INTERACTIONS MÉDICAMENTEUSES:
+- Warfarine: Risque d'augmentation de l'INR
+- Phénobarbital: Diminution de l'efficacité du paracétamol
+- Éthanol: Augmentation du risque de toxicité hépatique
+- Isoniazide: Potentialisation de la toxicité hépatique
+
+CONTRE-INDICATIONS:
+- Hypersensibilité connue au paracétamol
+- Insuffisance hépatique sévère
+- Déficit en G6PD
+- Grossesse: Utilisation possible mais avec précaution
+
+SURVEILLANCE:
+- Fonction hépatique chez les patients à risque
+- Dosage plasmatique en cas de surdosage
+- Surveillance de l'INR chez les patients sous anticoagulants
+
+EFFICACITÉ CLINIQUE:
+- Douleur légère à modérée: Efficacité comparable à l'aspirine
+- Fièvre: Réduction de 1-2°C en 2-4 heures
+- Arthrose: Amélioration significative de la douleur et de la fonction
+- Migraine: Efficacité modérée en monothérapie
+
+RECHERCHES RÉCENTES:
+- Études sur l'association avec la caféine pour potentialiser l'effet analgésique
+- Développement de formulations à libération prolongée
+- Recherche sur les mécanismes d'action dans la douleur neuropathique
+
+
+

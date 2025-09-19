@@ -101,7 +101,7 @@ start_clean() {
     fi
     
     # Définition de la clé API
-    export GEMINI_API_KEY="AIzaSyB1s2dCl9StMYXaGR4-MqqlEhWyRlvjL-c"
+    export GEMINI_API_KEY="${GEMINI_API_KEY}"
     
     # Démarrage de l'application
     print_status "Lancement de l'application..."

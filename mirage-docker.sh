@@ -49,7 +49,7 @@ check_requirements() {
     
     if [ -z "$GEMINI_API_KEY" ]; then
         print_warning "GEMINI_API_KEY non défini, utilisation de la clé par défaut"
-        export GEMINI_API_KEY="AIzaSyB1s2dCl9StMYXaGR4-MqqlEhWyRlvjL-c"
+        export GEMINI_API_KEY="${GEMINI_API_KEY}"
     fi
 }
 

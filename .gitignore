@@ -162,41 +162,91 @@ cython_debug/
 #  *.iws
 #  .idea/
 
-# MIRAGE v2 Specific
-# ==================
+# MIRAGE v2 Specific - SECURITY FIRST
+# ====================================
 
-# Configuration files with secrets
+# 🔒 SENSITIVE DATA - NEVER PUSH TO GITHUB
+# =========================================
+
+# Environment files with secrets
 .env
 .env.local
 .env.production
+.env.development
 config/secrets.json
 config/api_keys.json
+secrets/
+api_keys/
 
-# Data directories (keep structure but not content)
-data/raw_documents/*
-!data/raw_documents/.gitkeep
-data/processed/*
-!data/processed/.gitkeep
-data/cache/*
-!data/cache/.gitkeep
-data/embeddings/*
-!data/embeddings/.gitkeep
-data/output/*
-!data/output/.gitkeep
+# 🏥 MEDICAL DOCUMENTS - PROTECTED DATA
+# =====================================
+data/raw_documents/*.pdf
+data/raw_documents/*.txt
+data/raw_documents/*.docx
+data/raw_documents/*.doc
+data/medical/
+data/patient_data/
+data/clinical_trials/
 
-# Log files
-logs/*.log
-logs/*.json
+# 🗄️ DATABASES - LOCAL DATA ONLY
+# ===============================
+data/embeddings/
+data/qdrant_db/
+data/processed/
+data/cache/
+data/output/
+*.db
+*.sqlite
+*.sqlite3
+chroma_db/
+qdrant_db/
+
+# 📊 LOGS AND RESULTS - SENSITIVE INFORMATION
+# ===========================================
+logs/
 *.log
+*.json
+results/
+output/
+reports/
+diagnostic_*.json
+test_*_results.json
+*_results.json
 
-# Temporary files
+# 🔑 API KEYS AND SECRETS
+# =======================
+**/api_keys/
+**/secrets/
+**/credentials/
+**/tokens/
+*.key
+*.pem
+*.p12
+*.pfx
+
+# 🧪 TEST DATA WITH REAL INFORMATION
+# ==================================
+test_data/
+sample_data/
+demo_data/
+*_test_data/
+*_sample_*
+*_demo_*
+
+# 📁 TEMPORARY AND CACHE FILES
+# ============================
 *.tmp
 *.temp
 *.swp
 *.swo
 *~
+.cache/
+cache/
+temp/
+tmp/
 
-# OS specific
+# 🖥️ OS SPECIFIC FILES
+# ====================
 .DS_Store
 .DS_Store?
 ._*
@@ -205,48 +255,32 @@ logs/*.json
 ehthumbs.db
 Thumbs.db
 
-# IDE specific
+# 💻 IDE AND EDITOR FILES
+# ======================
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+.vim/
+.emacs.d/
 
-# Backup files
+# 💾 BACKUP FILES
+# ===============
 *.bak
 *.backup
 *_backup_*
 MIRAGE_backup_*
 MIRAGE_COMPLETE_BACKUP_*
+backup_*
+*_backup
 
-# Test files
-test_*.py
-*_test_*.py
-demo_*.py
-demo_*.sh
-demo_*.json
-demo_*.md
-
-# Development files
-start_*.py
-run_*.py
-quick_*.py
-*_simple_*.py
-*_minimal_*.py
-*_ultra_*.py
-*_fixed_*.py
-*_working_*.py
-
-# Docker
-.dockerignore
+# 🐳 DOCKER OVERRIDES
+# ===================
 docker-compose.override.yml
+.dockerignore
 
-# ChromaDB
-chroma_db/
-*.db
-*.sqlite
-*.sqlite3
-
-# Model files (large)
+# 🤖 MODEL FILES (LARGE)
+# =====================
 models/*.bin
 models/*.safetensors
 models/*.onnx
@@ -254,25 +288,31 @@ models/*.onnx
 *.safetensors
 *.onnx
 
-# Jupyter notebooks
+# 📓 JUPYTER NOTEBOOKS
+# ====================
 *.ipynb
+.ipynb_checkpoints/
 
-# Documentation builds
+# 📚 DOCUMENTATION BUILDS
+# =======================
 docs/_build/
 docs/build/
+site/
 
-# Coverage reports
+# 📈 COVERAGE AND PROFILING
+# =========================
 htmlcov/
 .coverage
 coverage.xml
-
-# Performance profiling
 *.prof
 *.profile
 
-# Security scans
+# 🔒 SECURITY SCANS
+# ================
 bandit_report.html
 safety_report.json
+security_scan_*
 
-# Pre-commit
+# ⚙️ PRE-COMMIT BACKUPS
+# =====================
 .pre-commit-config.yaml.bak

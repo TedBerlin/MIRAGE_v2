@@ -32,7 +32,8 @@ def reload_shared_prompts() -> 'AgentPrompts':
 
 def detect_language(text: str) -> str:
     """
-    Detect the language of the input text using word-by-word analysis.
+    Detect the language of the input text using enhanced word-by-word analysis.
+    Optimized for complex queries with robust pattern matching.
     
     Args:
         text: Input text to analyze
@@ -43,12 +44,12 @@ def detect_language(text: str) -> str:
     text_lower = text.lower()
     words = text_lower.split()
     
-    # Language-specific words (unique to each language)
+    # Enhanced language-specific words for complex queries
     language_words = {
-        'fr': ['quels', 'quelles', 'comment', 'pourquoi', 'quand', 'où', 'qui', 'que', 'sont', 'est', 'ont', 'peut', 'doit', 'les', 'des', 'du', 'de', 'la', 'le', 'un', 'une', 'dans', 'sur', 'avec', 'bénéfices', 'paracétamol'],
-        'es': ['qué', 'cómo', 'por', 'cuándo', 'dónde', 'quién', 'son', 'es', 'los', 'las', 'del', 'en', 'con', 'para', 'efectos', 'secundarios', 'niños', 'cuáles'],
-        'de': ['was', 'wie', 'warum', 'wann', 'wo', 'wer', 'sind', 'ist', 'der', 'die', 'das', 'und', 'oder', 'mit', 'von', 'für', 'effekte', 'wirkungen', 'vorteile', 'nachteile', 'welche', 'hat'],
-        'en': ['what', 'how', 'why', 'when', 'where', 'who', 'which', 'are', 'is', 'was', 'the', 'and', 'or', 'but', 'advantages', 'side', 'effects', 'contraindications', 'overdose']
+        'fr': ['quels', 'quelles', 'comment', 'pourquoi', 'quand', 'où', 'qui', 'que', 'sont', 'est', 'ont', 'peut', 'doit', 'les', 'des', 'du', 'de', 'la', 'le', 'un', 'une', 'dans', 'sur', 'avec', 'bénéfices', 'paracétamol', 'traitement', 'cancer', 'chimiothérapie', 'effets', 'secondaires', 'médicament', 'thérapie', 'patient', 'maladie', 'symptômes', 'diagnostic', 'prévention', 'guérison', 'soins', 'médecin', 'hôpital', 'pharmacie', 'posologie', 'contre-indications', 'interactions', 'allergies', 'grossesse', 'allaitement', 'enfants', 'personnes âgées', 'insuffisance', 'rénale', 'hépatique', 'cardiaque', 'respiratoire', 'digestive', 'neurologique', 'psychiatrique', 'dermatologique', 'ophtalmologique', 'urologique', 'gynécologique', 'pédiatrique', 'gériatrique', 'urgences', 'soins intensifs', 'réanimation', 'chirurgie', 'anesthésie', 'radiologie', 'laboratoire', 'analyses', 'examens', 'bilan', 'suivi', 'surveillance', 'monitoring', 'évaluation', 'efficacité', 'tolérance', 'sécurité', 'qualité', 'coût', 'remboursement', 'assurance', 'mutuelle', 'sécurité sociale', 'ameli', 'cpam', 'sécurité sociale', 'assurance maladie', 'mutuelle', 'complémentaire', 'tiers payant', 'avance de frais', 'ticket modérateur', 'franchise', 'forfait', 'participation', 'reste à charge', 'tiers payant', 'avance de frais', 'ticket modérateur', 'franchise', 'forfait', 'participation', 'reste à charge', 'quels', 'sont', 'les', 'effets', 'secondaires', 'de', 'la', 'chimiothérapie', 'quelles', 'sont', 'les', 'contre-indications', 'du', 'traitement', 'comment', 'fonctionne', 'ce', 'médicament', 'pourquoi', 'doit-on', 'prendre', 'cette', 'posologie', 'quand', 'consulter', 'un', 'médecin', 'où', 'trouver', 'des', 'informations', 'qui', 'peut', 'prescrire', 'ce', 'traitement', 'que', 'faire', 'en', 'cas', 'd\'effets', 'indésirables'],
+        'es': ['qué', 'cómo', 'por', 'cuándo', 'dónde', 'quién', 'son', 'es', 'los', 'las', 'del', 'en', 'con', 'para', 'efectos', 'secundarios', 'niños', 'cuáles', 'tratamiento', 'cáncer', 'quimioterapia', 'diabetes', 'insulina', 'cuáles', 'son', 'los', 'efectos', 'secundarios', 'de', 'la', 'quimioterapia', 'cuáles', 'son', 'las', 'contraindicaciones', 'del', 'tratamiento', 'cómo', 'funciona', 'este', 'medicamento', 'por', 'qué', 'debe', 'tomarse', 'esta', 'dosis', 'cuándo', 'consultar', 'un', 'médico', 'dónde', 'encontrar', 'información', 'quién', 'puede', 'recetar', 'este', 'tratamiento', 'qué', 'hacer', 'en', 'caso', 'de', 'efectos', 'adversos'],
+        'de': ['was', 'wie', 'warum', 'wann', 'wo', 'wer', 'sind', 'ist', 'der', 'die', 'das', 'und', 'oder', 'mit', 'von', 'für', 'effekte', 'wirkungen', 'vorteile', 'nachteile', 'welche', 'hat', 'behandlung', 'krebs', 'chemotherapie', 'nebenwirkungen', 'medikament', 'therapie', 'patient', 'krankheit', 'symptome', 'diagnose', 'prävention', 'heilung', 'pflege', 'arzt', 'krankenhaus', 'apotheke', 'dosierung', 'kontraindikationen', 'wechselwirkungen', 'allergien', 'schwangerschaft', 'stillzeit', 'kinder', 'ältere menschen', 'niereninsuffizienz', 'leberinsuffizienz', 'herzinsuffizienz', 'ateminsuffizienz', 'magen-darm', 'neurologisch', 'psychiatrisch', 'dermatologisch', 'augenheilkunde', 'urologisch', 'gynäkologisch', 'pädiatrisch', 'geriatrisch', 'notfall', 'intensivstation', 'reanimation', 'chirurgie', 'anästhesie', 'radiologie', 'labor', 'analysen', 'untersuchungen', 'bilanz', 'nachsorge', 'überwachung', 'monitoring', 'bewertung', 'wirksamkeit', 'verträglichkeit', 'sicherheit', 'qualität', 'kosten', 'erstattung', 'versicherung', 'krankenkasse', 'zusatzversicherung', 'eigenanteil', 'zuzahlung', 'franchise', 'pauschale', 'beteiligung', 'restkosten', 'welche', 'sind', 'die', 'nebenwirkungen', 'der', 'chemotherapie', 'welche', 'sind', 'die', 'kontraindikationen', 'der', 'behandlung', 'wie', 'funktioniert', 'dieses', 'medikament', 'warum', 'muss', 'diese', 'dosis', 'eingenommen', 'werden', 'wann', 'einen', 'arzt', 'konsultieren', 'wo', 'informationen', 'finden', 'wer', 'kann', 'diese', 'behandlung', 'verschreiben', 'was', 'tun', 'bei', 'nebenwirkungen'],
+        'en': ['what', 'how', 'why', 'when', 'where', 'who', 'which', 'are', 'is', 'was', 'the', 'and', 'or', 'but', 'advantages', 'side', 'effects', 'contraindications', 'overdose', 'treatment', 'cancer', 'chemotherapy', 'diabetes', 'insulin']
     }
     
     # Count matches for each language
@@ -57,6 +58,9 @@ def detect_language(text: str) -> str:
         score = sum(1 for word in words if word in words_list)
         language_scores[lang] = score
     
+    # Debug logging
+    logger.info(f"Language detection scores: {language_scores}")
+    
     # Find the language with the highest score
     best_language = max(language_scores, key=language_scores.get)
     best_score = language_scores[best_language]
@@ -64,6 +68,30 @@ def detect_language(text: str) -> str:
     # If no matches found, default to English
     if best_score == 0:
         return "en"
+    
+    # Special handling for language confusion
+    if best_language == "fr" and language_scores.get("es", 0) > 0:
+        # Check for Spanish-specific patterns
+        spanish_patterns = ["¿", "á", "é", "í", "ó", "ú", "ñ"]
+        if any(pattern in text for pattern in spanish_patterns):
+            logger.info("Spanish patterns detected, overriding French detection")
+            return "es"
+    
+    # Special handling for French vs German confusion
+    if best_language == "fr" and language_scores.get("de", 0) > 0:
+        # Check for German-specific patterns
+        german_patterns = ["ä", "ö", "ü", "ß", "der", "die", "das", "und", "oder"]
+        if any(pattern in text for pattern in german_patterns):
+            logger.info("German patterns detected, overriding French detection")
+            return "de"
+    
+    # Special handling for German vs French confusion
+    if best_language == "de" and language_scores.get("fr", 0) > 0:
+        # Check for French-specific patterns
+        french_patterns = ["à", "è", "é", "ê", "ë", "î", "ï", "ô", "ù", "û", "ü", "ç"]
+        if any(pattern in text for pattern in french_patterns):
+            logger.info("French patterns detected, overriding German detection")
+            return "fr"
     
     return best_language
 

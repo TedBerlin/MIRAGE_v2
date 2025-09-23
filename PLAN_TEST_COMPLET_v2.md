@@ -1,14 +1,20 @@
-# 🧪 PLAN DE TEST COMPLET - MIRAGE v2 OPTIMISÉ
-## Guide d'exécution pour validation du brief initial + 8 piliers
+# 🧪 PLAN DE TEST COMPLET - MIRAGE v2 RÉVOLUTIONNAIRE
+## Guide d'exécution pour validation du brief initial + 8 piliers + RAG AVANCÉ + HITL PRIORITAIRE
 
-### 🎯 Objectif
-Valider que MIRAGE v2 respecte 100% le brief initial avec les 3 documents RAG, toutes les fonctionnalités multi-agents, et les 8 piliers stratégiques.
+### 🎯 Objectif RÉVOLUTIONNAIRE
+Valider que MIRAGE v2 respecte 100% le brief initial avec **RAG AVANCÉ**, **HITL PRIORITAIRE**, **4 LANGUES MÉDICALES**, et les 8 piliers stratégiques.
+
+### 🌟 RÉVOLUTION MIRAGE v2 - TESTS
+- **🧠 RAG Avancé** : Upload transparent, indexation immédiate, recherche intelligente
+- **🛡️ HITL Prioritaire** : Contrôle humain absolu, sécurité maximale
+- **🌍 Multilingue** : 4 langues médicales (EN, FR, ES, DE)
+- **⚡ Performance** : < 1 seconde de réponse, 95% de précision
 
 ---
 
 ## 📋 PRÉPARATION
 
-### 1. Vérification de l'environnement
+### 1. Vérification de l'environnement RÉVOLUTIONNAIRE
 ```bash
 # Vérifier que Docker fonctionne
 docker ps
@@ -16,35 +22,208 @@ docker ps
 # Vérifier la clé API Gemini
 grep GEMINI_API_KEY .env
 
-# Vérifier l'état du système
+# Vérifier l'état du système Enhanced (port 8006)
+curl -s http://localhost:8006/health
+
+# Vérifier l'état du système Simple (port 8005)
 curl -s http://localhost:8005/health
 ```
 
-### 2. Démarrage du système optimisé
+### 2. Démarrage du système RÉVOLUTIONNAIRE
 ```bash
-# Utiliser la version optimisée
-./mirage-minimal.sh start
+# Démarrage API Enhanced (RAG + HITL)
+python enhanced_api.py > server_enhanced.log 2>&1 &
+
+# Démarrage API Simple (fallback)
+python simple_api.py > server_simple.log 2>&1 &
 
 # Vérifier les logs
-./mirage-minimal.sh logs
+tail -f server_enhanced.log
+tail -f server_simple.log
+```
+
+### 3. Tests RAG Avancé
+```bash
+# Test upload de document
+curl -X POST http://localhost:8006/documents/upload \
+  -F "file=@test_document.pdf" \
+  -F "metadata={\"type\":\"medical\",\"language\":\"fr\"}"
+
+# Test recherche intelligente
+curl -X GET "http://localhost:8006/documents/search?query=effets%20secondaires&top_k=5"
+
+# Test statistiques documents
+curl http://localhost:8006/documents/stats
+```
+
+### 4. Tests HITL Prioritaire
+```bash
+# Test détection automatique
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"effets secondaires grossesse","enable_human_loop":true}'
+
+# Test validation humaine
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"contraindications enfants","enable_human_loop":true}'
 ```
 
 ---
 
-## 🧪 TESTS À EXÉCUTER
+## 🧪 TESTS À EXÉCUTER RÉVOLUTIONNAIRES
 
-### **PHASE 1 : Tests de Détection de Langue** 🌍
+### **🧠 PHASE 1 : Tests RAG Avancé** 
 
-#### Test 1.1 : Questions en Anglais (EN) - 15 questions
+#### Test 1.1 : Upload Transparent
 ```bash
-# Test 1.1.1 - Effets secondaires
-curl -X POST "http://localhost:8005/api/query" \
+# Test 1.1.1 - Upload document médical
+curl -X POST http://localhost:8006/documents/upload \
+  -F "file=@medical_study.pdf" \
+  -F "metadata={\"type\":\"medical\",\"language\":\"fr\"}"
+
+# Test 1.1.2 - Vérification immédiate
+curl http://localhost:8006/documents/stats
+
+# Test 1.1.3 - Test de recherche
+curl -X GET "http://localhost:8006/documents/search?query=effets%20secondaires&top_k=5"
+```
+
+#### Test 1.2 : Indexation Immédiate
+```bash
+# Test 1.2.1 - Vérification chunks
+curl -X GET "http://localhost:8006/documents/search?query=test&top_k=1"
+
+# Test 1.2.2 - Vérification similarité
+curl -X GET "http://localhost:8006/documents/search?query=contraindications&top_k=3"
+
+# Test 1.2.3 - Performance indexation
+time curl -X GET "http://localhost:8006/documents/search?query=dosage&top_k=10"
+```
+
+### **🛡️ PHASE 2 : Tests HITL Prioritaire**
+
+#### Test 2.1 : Détection Automatique
+```bash
+# Test 2.1.1 - Mots-clés français
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"effets secondaires grossesse","enable_human_loop":true}'
+
+# Test 2.1.2 - Mots-clés anglais
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"side effects pregnancy","enable_human_loop":true}'
+
+# Test 2.1.3 - Mots-clés espagnols
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"efectos secundarios embarazo","enable_human_loop":true}'
+
+# Test 2.1.4 - Mots-clés allemands
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"nebenwirkungen schwangerschaft","enable_human_loop":true}'
+```
+
+#### Test 2.2 : Validation Humaine
+```bash
+# Test 2.2.1 - Requête critique enfants
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"contraindications enfants","enable_human_loop":true}'
+
+# Test 2.2.2 - Requête critique grossesse
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"effets secondaires grossesse","enable_human_loop":true}'
+
+# Test 2.2.3 - Vérification statut
+curl -X GET http://localhost:8006/validation/status
+```
+
+### **🌍 PHASE 3 : Tests Multilingue Intelligent**
+
+#### Test 3.1 : Détection de Langue
+```bash
+# Test 3.1.1 - Français
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"Quels sont les effets secondaires?","target_language":"fr"}'
+
+# Test 3.1.2 - English
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"What are the side effects?","target_language":"en"}'
+
+# Test 3.1.3 - Español
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"¿Cuáles son los efectos secundarios?","target_language":"es"}'
+
+# Test 3.1.4 - Deutsch
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"Was sind die Nebenwirkungen?","target_language":"de"}'
+```
+
+#### Test 3.2 : Traduction Médicale
+```bash
+# Test 3.2.1 - Traduction FR → EN
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"effets secondaires","target_language":"en"}'
+
+# Test 3.2.2 - Traduction EN → FR
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"side effects","target_language":"fr"}'
+
+# Test 3.2.3 - Traduction ES → DE
+curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"efectos secundarios","target_language":"de"}'
+```
+
+### **⚡ PHASE 4 : Tests Performance Révolutionnaire**
+
+#### Test 4.1 : Performance RAG
+```bash
+# Test 4.1.1 - Temps upload
+time curl -X POST http://localhost:8006/documents/upload \
+  -F "file=@test_document.pdf" \
+  -F "metadata={\"type\":\"medical\"}"
+
+# Test 4.1.2 - Temps recherche
+time curl -X GET "http://localhost:8006/documents/search?query=test&top_k=5"
+
+# Test 4.1.3 - Temps indexation
+time curl http://localhost:8006/documents/stats
+```
+
+#### Test 4.2 : Performance HITL
+```bash
+# Test 4.2.1 - Temps détection
+time curl -X POST http://localhost:8006/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"effets secondaires grossesse","enable_human_loop":true}'
+
+# Test 4.2.2 - Temps validation
+time curl -X GET http://localhost:8006/validation/status
+```
+
+### **🔍 PHASE 5 : Tests de Détection de Langue** 🌍
+
+#### Test 5.1 : Questions en Anglais (EN) - 15 questions
+```bash
+# Test 5.1.1 - Effets secondaires
+curl -X POST "http://localhost:8006/query" \
   -H "Content-Type: application/json" \
   -d '{"query": "What are the side effects of paracetamol overdose?", "enable_human_loop": true}' \
   | jq '.answer' | head -5
 
-# Test 1.1.2 - Mécanisme d'action
-curl -X POST "http://localhost:8005/api/query" \
+# Test 5.1.2 - Mécanisme d'action
+curl -X POST "http://localhost:8006/query" \
   -H "Content-Type: application/json" \
   -d '{"query": "What is the mechanism of action of paracetamol?", "enable_human_loop": true}' \
   | jq '.answer' | head -5

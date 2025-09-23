@@ -18,12 +18,12 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import google.generativeai as genai
-from agents.generator_agent import GeneratorAgent
-from agents.verifier_agent import VerifierAgent
-from agents.reformer_agent import ReformerAgent
-from agents.translator_agent import TranslatorAgent
-from orchestrator.human_loop_manager import HumanLoopManager
-from rag.rag_engine import RAGEngine
+from agents.simple_agents import SimpleGeneratorAgent, SimpleVerifierAgent, SimpleReformerAgent, SimpleTranslatorAgent
+from agents.agent_prompts import detect_language
+from agents.simple_language_detection import detect_language_simple
+from orchestrator.simple_human_loop import SimpleHumanLoopManager
+from orchestrator.simple_ethical_fallback import SimpleEthicalFallbackSystem
+from rag.simple_rag_engine import SimpleRAGEngine
 
 logger = structlog.get_logger(__name__)
 
@@ -37,7 +37,7 @@ class MultiAgentOrchestrator:
         enable_human_loop: bool = True,
         max_iterations: int = 3,
         cache_ttl: int = 3600,
-        request_timeout: int = 30
+        request_timeout: int = 60
     ):
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
         if not self.api_key:
@@ -54,16 +54,19 @@ class MultiAgentOrchestrator:
         genai.configure(api_key=self.api_key)
         self.gemini_model = genai.GenerativeModel('gemini-1.5-flash')
         
-        self.generator = GeneratorAgent(self.api_key)
-        self.verifier = VerifierAgent(self.api_key)
-        self.reformer = ReformerAgent(self.api_key)
-        self.translator = TranslatorAgent(self.api_key)
+        self.generator = SimpleGeneratorAgent(self.api_key)
+        self.verifier = SimpleVerifierAgent(self.api_key)
+        self.reformer = SimpleReformerAgent(self.api_key)
+        self.translator = SimpleTranslatorAgent(self.api_key)
         
         # Initialize Human-in-the-Loop Manager
-        self.human_loop_manager = HumanLoopManager() if enable_human_loop else None
+        self.human_loop_manager = SimpleHumanLoopManager() if enable_human_loop else None
+        
+        # Initialize Ethical Fallback System
+        self.ethical_fallback = SimpleEthicalFallbackSystem()
         
         # Initialize RAG Engine
-        self.rag_engine = RAGEngine()
+        self.rag_engine = SimpleRAGEngine()
         
         # Cache for context and responses
         self.context_cache = {}
@@ -97,8 +100,65 @@ class MultiAgentOrchestrator:
         start_time = time.time()
         query_hash = self._generate_query_hash(query)
         
+        # Detect language automatically
+        detected_language = detect_language_simple(query)
+        if target_language == "en" and detected_language != "en":
+            target_language = detected_language
+        
+        # PRIORITÉ HITL : Vérifier d'abord si HITL est activé pour les requêtes de sécurité
+        # enable_human_loop peut être True, False, ou None (défaut)
+        hitl_enabled = enable_human_loop if enable_human_loop is not None else self.enable_human_loop
+        
+        logger.info("HITL Debug", 
+                   query=query[:50], 
+                   enable_human_loop=enable_human_loop,
+                   self_enable_human_loop=self.enable_human_loop,
+                   hitl_enabled=hitl_enabled,
+                   human_loop_manager_exists=self.human_loop_manager is not None)
+        
+        if self.human_loop_manager and hitl_enabled:
+            # Vérifier si la requête nécessite une validation humaine AVANT le fallback éthique
+            should_trigger_fallback = self.ethical_fallback.should_trigger_ethical_fallback(query, detected_language)
+            logger.info("Ethical fallback check", 
+                       should_trigger_fallback=should_trigger_fallback,
+                       query=query[:50], 
+                       detected_language=detected_language)
+            
+            if should_trigger_fallback:
+                logger.info("Safety-critical query detected - triggering HITL instead of ethical fallback", 
+                           query=query[:50], detected_language=detected_language, hitl_enabled=hitl_enabled)
+                
+                # Créer une réponse de validation humaine au lieu du fallback éthique
+                human_validation_result = {
+                    "requires_human": True,
+                    "validation_request": {
+                        "validation_type": "safety_review",
+                        "priority": "high",
+                        "reason": "Safety keywords detected - requires human validation"
+                    }
+                }
+                
+                # Retourner une réponse de validation humaine
+                return self._create_pending_validation_response(
+                    query, 
+                    {"answer": "This query contains safety-critical keywords and requires human validation before proceeding."}, 
+                    {"vote": "PENDING", "confidence": 0.0, "verification_analysis": "Pending human validation for safety review"}, 
+                    human_validation_result, 
+                    query_hash
+                )
+        
+        # Fallback éthique SEULEMENT si HITL n'est pas activé
+        if not (self.human_loop_manager and hitl_enabled):
+            if self.ethical_fallback.should_trigger_ethical_fallback(query, detected_language):
+                logger.info("Ethical fallback triggered for safety (HITL disabled)", query=query[:50], detected_language=detected_language)
+                return self.ethical_fallback.create_ethical_fallback_response(query, detected_language, "Safety keywords detected")
+        
         try:
-            logger.info("Processing query with multi-agent system", query=query[:100], query_hash=query_hash)
+            logger.info("Processing query with multi-agent system", 
+                       query=query[:100], 
+                       query_hash=query_hash,
+                       detected_language=detected_language,
+                       target_language=target_language)
             
             # Check cache first
             cached_response = self._get_cached_response(query_hash)
@@ -174,12 +234,17 @@ class MultiAgentOrchestrator:
                     # Add translator to workflow
                     if "agent_workflow" not in final_response:
                         final_response["agent_workflow"] = []
-                    final_response["agent_workflow"].append("translator")
+                    if isinstance(final_response["agent_workflow"], list):
+                        final_response["agent_workflow"].append("translator")
+                    else:
+                        final_response["agent_workflow"] = ["translator"]
             
             # Step 6: Finalize response
             final_response.update({
                 "query": query,
                 "query_hash": query_hash,
+                "detected_language": detected_language,
+                "target_language": target_language,
                 "processing_time": time.time() - start_time,
                 "timestamp": datetime.now().isoformat(),
                 "rag_metadata": rag_metadata,
@@ -203,6 +268,7 @@ class MultiAgentOrchestrator:
             
         except Exception as e:
             logger.error("Multi-agent query processing failed", query=query, error=str(e))
+            # Return error response - system should fail gracefully, not invent answers
             return self._create_error_response(query, str(e), query_hash)
     
     @retry(
@@ -545,14 +611,13 @@ class MultiAgentOrchestrator:
                 except Exception as e:
                     health_status["agents"][agent_name] = f"unhealthy: {str(e)}"
             
-            # Overall health
-            all_healthy = all(
-                status == "healthy" or status == "unknown"
-                for status in health_status.values()
-                if isinstance(status, str)
+            # Overall health - simplified logic
+            agent_health = all(
+                status == "healthy" 
+                for status in health_status["agents"].values()
             )
             
-            health_status["overall"] = "healthy" if all_healthy else "unhealthy"
+            health_status["overall"] = "healthy" if agent_health else "unhealthy"
             
             return health_status
             

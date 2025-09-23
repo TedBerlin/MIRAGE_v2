@@ -1,24 +1,32 @@
-# MIRAGE v2 - Developer Guide
+# MIRAGE v2 - Developer Guide RÉVOLUTIONNAIRE
 
 ## Table of Contents
 1. [Development Setup](#development-setup)
 2. [Project Structure](#project-structure)
 3. [Code Standards](#code-standards)
 4. [Testing Guidelines](#testing-guidelines)
-5. [API Development](#api-development)
-6. [Agent Development](#agent-development)
-7. [RAG System Development](#rag-system-development)
-8. [Monitoring Development](#monitoring-development)
-9. [Deployment Development](#deployment-development)
-10. [Contributing Guidelines](#contributing-guidelines)
+5. [🧠 RAG Avancé Development](#rag-avancé-development)
+6. [🛡️ HITL Prioritaire Development](#hitl-prioritaire-development)
+7. [🌍 Multilingue Development](#multilingue-development)
+8. [API Enhanced Development](#api-enhanced-development)
+9. [Agent Development](#agent-development)
+10. [Monitoring Development](#monitoring-development)
+11. [Deployment Development](#deployment-development)
+12. [Contributing Guidelines](#contributing-guidelines)
 
 ## Development Setup
+
+### 🌟 RÉVOLUTION MIRAGE v2 - DÉVELOPPEMENT
+MIRAGE v2 révolutionne le développement avec **RAG AVANCÉ**, **HITL PRIORITAIRE**, et **4 LANGUES MÉDICALES**.
 
 ### Prerequisites
 - Python 3.9+
 - Git
 - Docker (optional)
 - IDE with Python support (VS Code, PyCharm, etc.)
+- **API Enhanced** (port 8006)
+- **RAG Avancé** capabilities
+- **HITL Prioritaire** system
 
 ### Development Environment Setup
 
@@ -761,9 +769,12 @@ class CustomAgent(BaseAgent):
         pass
 ```
 
-## RAG System Development
+## 🧠 RAG Avancé Development
 
-### RAG Component Development
+### 🌟 RÉVOLUTION RAG - DÉVELOPPEMENT
+MIRAGE v2 révolutionne le RAG avec **UPLOAD TRANSPARENT**, **INDEXATION IMMÉDIATE**, et **RECHERCHE INTELLIGENTE**.
+
+### RAG Component Development RÉVOLUTIONNAIRE
 
 #### Document Processor
 ```python
